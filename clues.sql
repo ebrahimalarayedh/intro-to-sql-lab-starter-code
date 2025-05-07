@@ -5,7 +5,7 @@ SELECT name, population,code
 FROM countries
 WHERE region = 'Southern Europe'
 ORDER BY population ASC
-LIMIT 3;
+LIMIT 1;
 
 
 -- -- Clue #2: Now that we're here, we have insight that Carmen was seen attending language classes in this country's officially recognized language. Check our databases and find out what language is spoken in this country, so we can call in a translator to work with you.
@@ -13,14 +13,14 @@ LIMIT 3;
 -- -- Write SQL query here
 SELECT *
 FROM countrylanguages
-WHERE countrycode in ('VAT', 'GIB','SMR') AND isofficial = true;
+WHERE countrycode = 'VAT'AND isofficial = true;
 
 -- -- Clue #3: We have new news on the classes Carmen attended – our gumshoes tell us she's moved on to a different country, a country where people speak only the language she was learning. Find out which nearby country speaks nothing but that language.
 
 -- -- Write SQL query here
 SELECT countrycode
 FROM countrylanguages
-WHERE (language = 'Italian' OR language='English')
+WHERE language = 'Italian'
 AND percentage = 100;
 
 -- -- Clue #4: We're booking the first flight out – maybe we've actually got a chance to catch her this time. There are only two cities she could be flying to in the country. One is named the same as the country – that would be too obvious. We're following our gut on this one; find out what other city in that country she might be flying to.
@@ -28,12 +28,11 @@ AND percentage = 100;
 -- -- Write SQL query here
 select name,code,region
 FROM countries
-WHERE code in ('SMR', 'BMU');
+WHERE code='SMR';
 
 SELECT *
 FROM cities
-WHERE (countrycode = 'SMR' and name<> 'San Marino') OR 
-(countrycode= 'BMU' and name<>'Bermuda');
+WHERE (countrycode = 'SMR' and name<> 'San Marino');
 
 
 -- -- Clue #5: Oh no, she pulled a switch – there are two cities with very similar names, but in totally different parts of the globe! She's headed to South America as we speak; go find a city whose name is like the one we were headed to, but doesn't end the same. Find out the city, and do another search for what country it's in. Hurry!
@@ -43,7 +42,7 @@ SELECT c.name AS city, co.name AS country, co.code AS code
 FROM cities c
 JOIN countries co ON c.countrycode = co.code
 WHERE co.continent = 'South America'
-  AND (c.name ILIKE '%Sai%'  OR c.name ILIKE '%Ham%' OR c.name ILIKE '%Ser%')
+  AND c.name ILIKE '%Ser%'
   AND c.name NOT LIKE '%lle';  
 
 
